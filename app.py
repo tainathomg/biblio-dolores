@@ -85,8 +85,6 @@ if 'modo_aquisicao' not in st.session_state:
     st.session_state.modo_aquisicao = ""
 if 'ano_baixa' not in st.session_state:
     st.session_state.ano_baixa = ""
-if 'isbn' not in st.session_state:
-    st.session_state.isbn = ""
 if 'autor' not in st.session_state:
     st.session_state.autor = ""
 if 'titulo' not in st.session_state:
@@ -151,32 +149,6 @@ def verificar_numero():
             st.session_state.etiqueta = ""
 
 
-def preencher_campos_com_isbn():
-    isbn = st.session_state.isbn.strip()
-    if not isbn:
-        return
-
-    api_key = "AIzaSyDRGxLjAXtGRwfwbvOj9hsrLgMSo19NshI"
-    url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={api_key}"
-    headers = {"User-Agent": "MeuApp/1.0 (contato@meuapp.com)"}
-    try:
-        response = requests.get(url, headers=headers)
-        # Verificar se o código de status é 403
-        if response.status_code == 403:
-            st.error("Erro 403: Acesso negado. Verifique sua chave de API ou as permissões.")
-            return
-        response.raise_for_status()
-        data = response.json()
-        if "items" in data:
-            volume_info = data["items"][0]["volumeInfo"]
-            st.session_state.autor = ", ".join(volume_info.get("authors", []))
-            st.session_state.titulo = volume_info.get("title", "")
-            st.session_state.editora = volume_info.get("publisher", "")
-            st.success("Informações preenchidas a partir do ISBN.")
-        else:
-            st.warning("ISBN não encontrado no Google Books.")
-    except Exception as e:
-        st.error(f"Erro ao buscar ISBN: {e}")
 
 # Se a flag de limpeza estiver ativada, limpe os campos antes de renderizar os inputs
 if st.session_state.limpar_campos:
@@ -206,14 +178,12 @@ with cols[4]:
 
 st.header("DADOS DO DOCUMENTO")
 # Criar colunas para os dados do documento
-cols = st.columns(4)
+cols = st.columns(3)
 with cols[0]:
-    st.text_input("ISBN:", key='isbn', on_change=preencher_campos_com_isbn)
-with cols[1]:
     st.text_input("Autor:", key='autor')
-with cols[2]:
+with cols[1]:
     st.text_input("Título:", key='titulo')
-with cols[3]:
+with cols[2]:
     st.text_input("Editora:", key='editora')
 
 st.header("LOCALIZAÇÃO NO ACERVO")
