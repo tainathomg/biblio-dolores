@@ -156,7 +156,8 @@ def preencher_campos_com_isbn():
     if not isbn:
         return
 
-    url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}"
+    api_key = "AIzaSyDRGxLjAXtGRwfwbvOj9hsrLgMSo19NshI"
+    url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={api_key}"
     try:
         response = requests.get(url)
         response.raise_for_status()
