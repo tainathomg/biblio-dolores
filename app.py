@@ -158,8 +158,15 @@ def preencher_campos_com_isbn():
 
     api_key = "AIzaSyDRGxLjAXtGRwfwbvOj9hsrLgMSo19NshI"
     url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={api_key}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
     try:
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
+        # Verificar se o código de status é 403
+        if response.status_code == 403:
+            st.error("Erro 403: Acesso negado. Verifique sua chave de API ou as permissões.")
+            return
         response.raise_for_status()
         data = response.json()
         if "items" in data:
