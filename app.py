@@ -158,9 +158,7 @@ def preencher_campos_com_isbn():
 
     api_key = "AIzaSyDRGxLjAXtGRwfwbvOj9hsrLgMSo19NshI"
     url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={api_key}"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
+    headers = {"User-Agent": "MeuApp/1.0 (contato@meuapp.com)"}
     try:
         response = requests.get(url, headers=headers)
         # Verificar se o código de status é 403
