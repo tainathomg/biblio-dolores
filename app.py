@@ -213,7 +213,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns([1,1,1])
+col1, col2 = st.columns([1,1])
 with col1:
     if st.button("LIMPAR", use_container_width=True, type="secondary"):
         st.session_state.limpar_campos = True
@@ -239,25 +239,4 @@ with col2:
                 st.error("Número não encontrado para validação.")
         else:
             st.error("Digite um número para validar.")
-with col3:
-    if st.button("SALVAR", use_container_width=True, type="secondary"):
-        if st.session_state.numero in df["Número"].values:
-            st.error("Este número já existe. Não é possível sobrescrever.")
-        else:
-            acervo = st.session_state.acervo or ""
-            classe = st.session_state.classe or ""
-            autor = (st.session_state.autor or "").upper()[:3]
-            titulo = (st.session_state.titulo or "")
-            titulo_letra = titulo[0].lower() if titulo else ""
-            numero = st.session_state.numero or ""
-            etiqueta = f"{acervo}({classe}){autor}{titulo_letra}{numero}"
-            nova_linha = [st.session_state.numero, st.session_state.ano, st.session_state.tipo_doc, 
-                         st.session_state.modo_aquisicao, st.session_state.ano_baixa,
-                         st.session_state.autor, st.session_state.titulo, st.session_state.editora,
-                         st.session_state.acervo, st.session_state.forma, st.session_state.classe, 
-                         st.session_state.assunto, etiqueta, "Validado"]
-            sheet.append_row(nova_linha)
-            st.success(f"Novo documento salvo com sucesso. Etiqueta de Lombada: {etiqueta}")
-            st.session_state.limpar_campos = True
-            st.rerun()
 
